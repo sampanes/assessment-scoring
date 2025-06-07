@@ -1,0 +1,30 @@
+{
+  "name": "example-survey",
+  "questions": [...],
+  "scoring": {
+    "methods": [
+      {
+        "name": "total",
+        "type": "sum",
+        "values": [0, 1, 2, 3]
+      },
+      {
+        "name": "criteria-0",
+        "type": "criteria",
+        "require": [
+          {
+            "type": "countInRange",
+            "questions": [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "range": [2, 3],
+            "minCount": 6
+          },
+          {
+            "type": "anyInRange",
+            "questions": [48, 49, 50, 51, 52, 53, 54, 55],
+            "range": [4, 5]
+          }
+        ]
+      }
+    ]
+  }
+}

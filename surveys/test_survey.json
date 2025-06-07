@@ -1,0 +1,30 @@
+{
+  "name": "Test Survey",
+  "questions": [
+    {
+      "number": 1,
+      "text": "I feel foo or bar.",
+      "options": ["Never", "Sometimes", "Often", "Always"]
+    },
+    {
+      "number": 2,
+      "text": "I lorem more than ipsum.",
+      "options": ["Never", "Sometimes", "Often", "Always"]
+    }
+  ],
+  "scoring": {
+    "methods": [
+      {
+        "name": "total",
+        "type": "sum",
+        "values": [0, 1, 2, 3]
+      },
+      {
+        "name": "threshold-count",
+        "type": "countAbove",
+        "threshold": 2,
+        "values": [0, 1, 2, 3]
+      }
+    ]
+  }
+}

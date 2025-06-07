@@ -1,87 +1,55 @@
-        var currTurn = "x";
-        var board = document.querySelector(".board");
-        var text = document.querySelector(".text");
-        var turns = document.querySelector(".turns");
-        var cells = document.querySelectorAll(".cell");
-        var restart = document.getElementById("restart");
+const surveyFolder = 'surveys/';
 
-        const winCombs = [
-        [0, 1, 2],
-        [3, 4, 5],
-        [6, 7, 8],
-        [0, 3, 6],
-        [1, 4, 7],
-        [2, 5, 8],
-        [0, 4, 8],
-        [2, 4, 6],
-        ];
+// Hardcoded list of files (since GitHub Pages can’t list directory contents)
+const surveyFiles = [
+  'test_survey.json'
+  // add more filenames here as you add surveys
+];
 
-        cells.forEach((element) => {
-        element.addEventListener("click", doThis, { once: true }); 
-        });
+async function loadSurveys() {
+  const list = document.getElementById('surveyList');
+  list.innerHTML = ''; // clear "Loading..."
 
-        restart.addEventListener("click", (e) => {
-        location.reload();
-        return false;
-        });
+  for (const file of surveyFiles) {
+    try {
+      const response = await fetch(surveyFolder + file);
+      const data = await response.json();
+      const name = data.name || '(Unnamed survey)';
 
-        function doThis(e) {
-        markTheCell(e.target);
-        if (isCurrWinner()) {
-            gameOver(false);
-        } else if (isDraw()) {
-            gameOver(true);
-        } else {
-            changeTurn();
-            changeBoard();
-        }
-        }
+      const li = document.createElement('li');
 
-        function markTheCell(element) {
-        if (currTurn == "x") {
-            element.innerHTML = "X";
-            element.classList.add("x");
-        } else {
-            element.innerHTML = "O";
-            element.classList.add("o");
-        }
-        }
+      // Create survey info block
+      const title = document.createElement('strong');
+      title.textContent = name;
 
-        function isCurrWinner() {
-        return winCombs.some((currComb) => {
-            return currComb.every((cellIndex) => {
-            return cells[cellIndex].classList.contains(currTurn);
-            });
-        });
-        }
+      const filename = document.createElement('span');
+      filename.style.fontSize = '0.9em';
+      filename.style.marginLeft = '0.5em';
+      filename.style.color = '#888';
+      filename.textContent = `(${file})`;
 
-        function isDraw() {
-        return [...cells].every((cell) => {
-            return cell.classList.contains("x") || cell.classList.contains("o");
-        });
-        }
+      // Create a button to "select" the survey
+      const button = document.createElement('button');
+      button.textContent = 'Select';
+      button.style.marginLeft = '1em';
+      button.onclick = () => {
+        window.location.href = `survey.html?file=${encodeURIComponent(file)}`;
+      };
 
-        function gameOver(draw) {
-        if (draw) {
-            text.innerText = "Draw!";
-        } else {
-            text.innerText = "Player " + currTurn.toUpperCase() + " Wins!";
-        }
-        document.querySelector(".finish").style.display = "flex";
-        }
 
-        function changeTurn() {
-        turns.classList.remove(currTurn);
-        currTurn == "x" ? (currTurn = "o") : (currTurn = "x");
-        turns.classList.add(currTurn);
-        turns.innerText = "Player " + currTurn.toUpperCase() + "'s turn";
-        }
+      li.appendChild(title);
+      li.appendChild(filename);
+      li.appendChild(button);
 
-        function changeBoard() {
-        cells.forEach((element) => {
-            if (element.classList.length == 1)
-            element.innerHTML = currTurn.toUpperCase();
-        });
-        currTurn == "x" ? board.classList.remove("o") : board.classList.remove("x");
-        board.classList.add(currTurn);
-        }
+      list.appendChild(li);
+    } catch (err) {
+      console.error(`Failed to load ${file}:`, err);
+      const errorLi = document.createElement('li');
+      errorLi.textContent = `❌ Failed to load ${file}`;
+      errorLi.style.color = 'red';
+      list.appendChild(errorLi);
+    }
+  }
+}
+
+loadSurveys();
