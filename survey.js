@@ -1,6 +1,9 @@
+/* Global Vars */
+
 let currentQuestion = 0;
 let surveyData = null;
-const responses = {}; // holds question number => answer index
+const responses = {};
+let viewingResults = false;
 
 /* DECLARE FUNCS */
 
@@ -33,6 +36,7 @@ async function loadSurvey() {
 }
 
 function renderCurrentQuestion() {
+    document.getElementById('surveyContent').style.display = 'block';
     const q = surveyData.questions[currentQuestion];
     const container = document.getElementById('questionContainer');
     container.innerHTML = '';
@@ -64,6 +68,42 @@ function renderCurrentQuestion() {
 
     document.getElementById('prevBtn').disabled = currentQuestion === 0;
     document.getElementById('nextBtn').disabled = currentQuestion === surveyData.questions.length - 1;
+    document.getElementById('navControls').style.display = 'flex';
+}
+
+function renderResults() {
+  const scores = calculateScores(surveyData, responses);
+  const container = document.getElementById('questionContainer');
+  const resultsDiv = document.getElementById('resultsContainer');
+
+  container.innerHTML = '';
+  resultsDiv.innerHTML = '<h3>📊 Results:</h3>';
+
+  scores.forEach(score => {
+    const p = document.createElement('p');
+    p.textContent = `${score.name}: ${score.value}`;
+    resultsDiv.appendChild(p);
+  });
+
+  document.getElementById('surveyContent').style.display = 'none';
+}
+
+function navigateTo(target) {
+  const container = document.getElementById('questionContainer');
+  const results = document.getElementById('resultsContainer');
+
+  if (target === "results") {
+    viewingResults = true;
+    currentQuestion = null;
+    renderResults();
+    results.scrollIntoView({ behavior: 'smooth' });
+    return;
+  }
+
+  viewingResults = false;
+  currentQuestion = target;
+  results.innerHTML = '';
+  renderCurrentQuestion();
 }
 
 function populateSidebar() {
@@ -77,15 +117,25 @@ function populateSidebar() {
 
     li.textContent = `${q.number}. ${q.text.slice(0, 20)}... : ${status}`;
     li.onclick = () => {
-      currentQuestion = i;
-      renderCurrentQuestion();
+      navigateTo(i);
       document.getElementById('sideMenu').classList.remove('visible');
     };
 
-    li.style.color = answer !== undefined ? 'green' : 'gray';
-
+    li.className = answer !== undefined ? 'green' : 'gray';
     list.appendChild(li);
   });
+
+  // Add results nav item if available
+  if (viewingResults) {
+    const li = document.createElement('li');
+    li.textContent = 'Calculated Results';
+    li.onclick = () => {
+      navigateTo("results");
+      document.getElementById('sideMenu').classList.remove('visible');
+    };
+    li.style.fontWeight = 'bold';
+    list.appendChild(li);
+  }
 }
 
 function calculateScores(data, responses) {
@@ -166,7 +216,7 @@ document.getElementById('submitBtn').onclick = () => {
   if (unanswered) {
     alert(`❗ Please answer Question ${unanswered.number} before submitting.`);
     currentQuestion = surveyData.questions.indexOf(unanswered);
-    renderCurrentQuestion();
+    navigateTo(currentQuestion);
     return;
   }
 
@@ -181,5 +231,6 @@ document.getElementById('submitBtn').onclick = () => {
     resultsDiv.appendChild(p);
   });
 
-  window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  navigateTo("results");
+  populateSidebar();
 };
