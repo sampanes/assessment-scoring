@@ -150,3 +150,43 @@ h1, h2 {
 #questionList li.gray {
   color: gray;
 }
+
+#resultsContainer {
+  max-width: 600px;
+  margin: 2em auto;
+  background: #fff;
+  border-radius: 1em;
+  padding: 1.5em 2em;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+  font-size: 1.05em;
+  line-height: 1.7;
+}
+
+#resultsContainer h3 {
+  font-size: 1.4em;
+  margin-bottom: 1em;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.resultItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5em 0;
+  border-bottom: 1px solid #eee;
+}
+
+.resultItem:last-child {
+  border-bottom: none;
+}
+
+.resultLabel {
+  font-weight: 500;
+  color: #333;
+}
+
+.resultValue {
+  font-weight: bold;
+  color: #0078d4;
+}

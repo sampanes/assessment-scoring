@@ -71,21 +71,53 @@ function renderCurrentQuestion() {
     document.getElementById('navControls').style.display = 'flex';
 }
 
+function generateScoreLabel(method) {
+  const qCount = method.questions?.length;
+  const qRange = method.questions ? ` (Q${method.questions[0]}–${method.questions[method.questions.length - 1]})` : '';
+
+  switch (method.type) {
+    case "sum":
+      return `Total Score${qRange}`;
+    case "average":
+      return `Average Rating${qRange}`;
+    case "countAbove":
+      return `Numer of answers ≥${method.threshold}${qRange}`;
+    case "criteria":
+      return `Criteria Met: ${method.name}`;
+    default:
+      return method.name;
+  }
+}
+
 function renderResults() {
-  const scores = calculateScores(surveyData, responses);
-  const container = document.getElementById('questionContainer');
-  const resultsDiv = document.getElementById('resultsContainer');
+    const scores = calculateScores(surveyData, responses);
+    const container = document.getElementById('questionContainer');
+    const resultsDiv = document.getElementById('resultsContainer');
 
-  container.innerHTML = '';
-  resultsDiv.innerHTML = '<h3>📊 Results:</h3>';
+    container.innerHTML = '';
+    resultsDiv.innerHTML = '<h3>📊 Results:</h3>';
 
-  scores.forEach(score => {
-    const p = document.createElement('p');
-    p.textContent = `${score.name}: ${score.value}`;
-    resultsDiv.appendChild(p);
-  });
+    scores.forEach(score => {
+        const method = surveyData.scoring.methods.find(m => m.name === score.name);
+        const label = method ? generateScoreLabel(method) : score.name;
 
-  document.getElementById('surveyContent').style.display = 'none';
+        const div = document.createElement('div');
+        div.className = 'resultItem';
+
+        const labelSpan = document.createElement('span');
+        labelSpan.className = 'resultLabel';
+        labelSpan.textContent = label;
+
+        const valueSpan = document.createElement('span');
+        valueSpan.className = 'resultValue';
+        valueSpan.textContent = score.value;
+
+        div.appendChild(labelSpan);
+        div.appendChild(valueSpan);
+        resultsDiv.appendChild(div);
+    });
+
+    document.getElementById('surveyContent').style.display = 'none';
 }
 
 function navigateTo(target) {
@@ -142,22 +174,36 @@ function calculateScores(data, responses) {
   const scores = [];
 
   data.scoring.methods.forEach(method => {
+    console.log(`\n🔍 Calculating "${method.name}" (${method.type})`);
+
     if (method.type === 'sum') {
       let total = 0;
-      data.questions.forEach(q => {
-        const answer = responses[q.number];
-        if (answer !== undefined) total += method.values[answer];
+      const qList = method.questions || data.questions.map(q => q.number);
+
+      qList.forEach(qNum => {
+        const answer = responses[qNum];
+        const val = method.values?.[answer];
+        console.log(`Q${qNum}: answer=${answer}, mapped=${val}`);
+        if (answer !== undefined && val !== undefined) total += val;
       });
+
+      console.log(`➡️ Total for ${method.name}: ${total}`);
       scores.push({ name: method.name, value: total });
 
     } else if (method.type === 'countAbove') {
       let count = 0;
-      data.questions.forEach(q => {
-        const answer = responses[q.number];
-        if (answer !== undefined && method.values[answer] >= method.threshold) {
+      const qList = method.questions || data.questions.map(q => q.number);
+
+      qList.forEach(qNum => {
+        const answer = responses[qNum];
+        const val = method.values?.[answer];
+        console.log(`Q${qNum}: answer=${answer}, mapped=${val}`);
+        if (answer !== undefined && val !== undefined && val >= method.threshold) {
           count++;
         }
       });
+
+      console.log(`➡️ Count ≥${method.threshold}: ${count}`);
       scores.push({ name: method.name, value: count });
 
     } else if (method.type === 'criteria') {
@@ -166,20 +212,42 @@ function calculateScores(data, responses) {
 
         if (rule.type === 'countInRange') {
           const count = values.filter(v => v >= rule.range[0] && v <= rule.range[1]).length;
+          console.log(`📐 countInRange: ${count} in range ${rule.range}`);
           return count >= rule.minCount;
         }
 
         if (rule.type === 'anyInRange') {
-          return values.some(v => v >= rule.range[0] && v <= rule.range[1]);
+          const pass = values.some(v => v >= rule.range[0] && v <= rule.range[1]);
+          console.log(`📐 anyInRange passed? ${pass}`);
+          return pass;
         }
 
         return false;
       });
 
+      console.log(`➡️ Criteria ${method.name}: ${passed ? '✅' : '❌'}`);
       scores.push({
         name: method.name,
         value: passed ? '✅ met' : '❌ not met'
       });
+
+    } else if (method.type === 'average') {
+      let total = 0;
+      let count = 0;
+
+      method.questions.forEach(qNum => {
+        const answer = responses[qNum];
+        const val = method.values?.[answer];
+        console.log(`Q${qNum}: answer=${answer}, mapped=${val}`);
+        if (answer !== undefined && val !== undefined) {
+          total += val;
+          count++;
+        }
+      });
+
+      const avg = count > 0 ? (total / count).toFixed(2) : "N/A";
+      console.log(`➡️ Average for ${method.name}: ${avg}`);
+      scores.push({ name: method.name, value: avg });
     }
   });
 

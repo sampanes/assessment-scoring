@@ -1,9 +1,9 @@
 const surveyFolder = 'surveys/';
 
-// Hardcoded list of files (since GitHub Pages can’t list directory contents)
+/* Hardcoded list of files (since GitHub Pages can’t list directory contents) */
 const surveyFiles = [
-  'test_survey.json'
-  // add more filenames here as you add surveys
+  'test_survey.json',
+  'vanderbilt_parent.json'
 ];
 
 async function loadSurveys() {

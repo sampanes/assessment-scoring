@@ -1,6 +1,6 @@
 {
   "name": "example-survey",
-  "questions": [...],
+  "questions": [],
   "scoring": {
     "methods": [
       {
