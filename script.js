@@ -31,7 +31,7 @@ async function loadSurveys() {
       // Create a button to "select" the survey
       const button = document.createElement('button');
       button.textContent = 'Select';
-      button.style.marginLeft = '1em';
+      button.className = 'selectBtn'; // 👈 new class
       button.onclick = () => {
         window.location.href = `survey.html?file=${encodeURIComponent(file)}`;
       };

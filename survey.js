@@ -46,10 +46,17 @@ function renderCurrentQuestion() {
     question.innerHTML = `<strong>${q.number}.</strong> ${q.text}`;
     wrapper.appendChild(question);
 
+    // Find the relevant values mapping
+    const methodWithValues = surveyData.scoring?.methods.find(m => m.values && (m.questions === undefined || m.questions.includes(q.number)));
+    const values = methodWithValues?.values || q.options.map((_, i) => i); // default fallback
+
     q.options.forEach((opt, idx) => {
     const btn = document.createElement('button');
-    btn.textContent = opt;
+    const scoreValue = values[idx];
+
+    btn.textContent = `${scoreValue} :  ${opt}`;
     btn.className = 'optionBtn';
+
     btn.onclick = () => {
         responses[q.number] = idx;
         if (currentQuestion < surveyData.questions.length - 1) currentQuestion++;
@@ -139,8 +146,17 @@ function navigateTo(target) {
 }
 
 function populateSidebar() {
-  const list = document.getElementById('questionList');
-  list.innerHTML = '';
+    const list = document.getElementById('questionList');
+    list.innerHTML = '';
+
+    // 🏠 Home link
+    const homeLi = document.createElement('li');
+    homeLi.textContent = '🏠 Home';
+    homeLi.style.fontWeight = 'bold';
+    homeLi.onclick = () => {
+    window.location.href = 'index.html';
+    };
+    list.appendChild(homeLi);
 
   surveyData.questions.forEach((q, i) => {
     const li = document.createElement('li');
