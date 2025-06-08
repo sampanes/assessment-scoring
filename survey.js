@@ -161,7 +161,18 @@ function populateSidebar() {
   surveyData.questions.forEach((q, i) => {
     const li = document.createElement('li');
     const answer = responses[q.number];
-    const status = answer !== undefined ? answer : 'x';
+    const answerIndex = responses[q.number];
+    let status = 'x';
+
+    // This is where I get the answer *value* from json, so index 0 might actually be a 1 and we need to reflect that.
+    if (answerIndex !== undefined) {
+      const method = surveyData.scoring.methods.find(m =>
+        m.values && (!m.questions || m.questions.includes(q.number))
+      );
+
+      const value = method?.values?.[answerIndex];
+      status = value !== undefined ? value : answerIndex;
+    }
 
     li.textContent = `${q.number}. ${q.text.slice(0, 20)}... : ${status}`;
     li.onclick = () => {
@@ -318,3 +329,18 @@ document.getElementById('submitBtn').onclick = () => {
   navigateTo("results");
   populateSidebar();
 };
+
+document.addEventListener('click', (e) => {
+  const sideMenu = document.getElementById('sideMenu');
+  const menuToggle = document.getElementById('menuToggle');
+
+  // If menu is open AND click is outside both menu and toggle
+  if (
+    sideMenu.classList.contains('visible') &&
+    !sideMenu.contains(e.target) &&
+    !menuToggle.contains(e.target)
+  ) {
+    sideMenu.classList.remove('visible');
+  }
+});
+
