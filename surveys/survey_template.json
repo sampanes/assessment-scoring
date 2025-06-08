@@ -6,7 +6,9 @@
       {
         "name": "total",
         "type": "sum",
-        "values": [0, 1, 2, 3]
+        "values": [0, 1, 2, 3],
+        "threshold": 3,
+        "questions": []
       },
       {
         "name": "criteria-0",

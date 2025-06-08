@@ -1,5 +1,5 @@
 {
-    "name": "NICHQ Vanderbilt Assessment Scale",
+    "name": "NICHQ Vanderbilt (Parent)",
     "questions": [
         { "number": 1, "text": "Does not pay attention to details or makes careless mistakes (e.g., with homework)", "options": ["Never", "Occasionally", "Often", "Very Often"] },
         { "number": 2, "text": "Has difficulty keeping attention to what needs to be done", "options": ["Never", "Occasionally", "Often", "Very Often"] },

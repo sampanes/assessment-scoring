@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Assessment Survey Schema",
+  "type": "object",
+  "required": ["name", "questions", "scoring"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "The name of the survey"
+    },
+    "questions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["number", "text", "options"],
+        "properties": {
+          "number": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "text": {
+            "type": "string"
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1
+          }
+        }
+      }
+    },
+    "scoring": {
+      "type": "object",
+      "required": ["methods"],
+      "properties": {
+        "methods": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "type", "values"],
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": ["sum", "countAbove", "criteria", "average"]
+              },
+              "values": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                },
+                "minItems": 1
+              },
+              "threshold": {
+                "type": "integer"
+              },
+              "questions": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              },
+              "require": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["type", "questions", "range"],
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "enum": ["countInRange", "anyInRange"]
+                    },
+                    "questions": {
+                      "type": "array",
+                      "items": {
+                        "type": "integer"
+                      }
+                    },
+                    "range": {
+                      "type": "array",
+                      "items": {
+                        "type": "integer"
+                      },
+                      "minItems": 2,
+                      "maxItems": 2
+                    },
+                    "minCount": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

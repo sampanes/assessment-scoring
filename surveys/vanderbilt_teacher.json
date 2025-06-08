@@ -1,0 +1,99 @@
+{
+    "name": "NICHQ Vanderbilt (Teacher)",
+    "questions": [
+        { "number": 1, "text": "Fails to give attention to details or makes careless mistakes in schoolwork", "options": ["Never", "Occasionally", "Often", "Very Often"] },
+        { "number": 2, "text": "Has difficulty sustaining attention to tasks or activities", "options": ["Never", "Occasionally", "Often", "Very Often"] },
+        { "number": 3, "text": "Does not seem to listen when spoken to directly", "options": ["Never", "Occasionally", "Often", "Very Often"] },
+        { "number": 4, "text": "Does not follow through on instructions and fails to finish schoolwork (not due to oppositional behavior or failure to understand)", "options": ["Never", "Occasionally", "Often", "Very Often"] },
+        { "number": 5, "text": "Has difficulty organizing tasks and activities", "options": ["Never", "Occasionally", "Often", "Very Often"] },
+        { "number": 6, "text": "Avoids, dislikes, or is reluctant to engage in tasks that require sustained mental effort", "options": ["Never", "Occasionally", "Often", "Very Often"] },
+        { "number": 7, "text": "Loses things necessary for tasks or activities (school assignments, pencils, or books)", "options": ["Never", "Occasionally", "Often", "Very Often"] },
+        { "number": 8, "text": "Is easily distracted by extraneous stimuli", "options": ["Never", "Occasionally", "Often", "Very Often"] },
+        { "number": 9, "text": "Is forgetful in daily activities", "options": ["Never", "Occasionally", "Often", "Very Often"] },
+        { "number": 10, "text": "Fidgets with hands or feet or squirms in seat", "options": ["Never", "Occasionally", "Often", "Very Often"] },
+        { "number": 11, "text": "Leaves seat in classroom or in other situations in which remaining seated is expected", "options": ["Never", "Occasionally", "Often", "Very Often"] },
+        { "number": 12, "text": "Runs about or climbs excessively in situations in which remaining seated is expected", "options": ["Never", "Occasionally", "Often", "Very Often"] },
+        { "number": 13, "text": "Has difficulty playing or engaging in leisure activities quietly", "options": ["Never", "Occasionally", "Often", "Very Often"] },
+        { "number": 14, "text": "Is 'on the go' or often acts as if 'driven by a motor'", "options": ["Never", "Occasionally", "Often", "Very Often"] },
+        { "number": 15, "text": "Talks excessively", "options": ["Never", "Occasionally", "Often", "Very Often"] },
+        { "number": 16, "text": "Blurts out answers before questions have been completed", "options": ["Never", "Occasionally", "Often", "Very Often"] },
+        { "number": 17, "text": "Has difficulty waiting in line", "options": ["Never", "Occasionally", "Often", "Very Often"] },
+        { "number": 18, "text": "Interrupts or intrudes on others (e.g., butts into conversations/games)", "options": ["Never", "Occasionally", "Often", "Very Often"] },
+        { "number": 19, "text": "Loses temper", "options": ["Never", "Occasionally", "Often", "Very Often"] },
+        { "number": 20, "text": "Actively defies or refuses to comply with adult’s requests or rules", "options": ["Never", "Occasionally", "Often", "Very Often"] },
+        { "number": 21, "text": "Is angry or resentful", "options": ["Never", "Occasionally", "Often", "Very Often"] },
+        { "number": 22, "text": "Is spiteful and vindictive", "options": ["Never", "Occasionally", "Often", "Very Often"] },
+        { "number": 23, "text": "Bullies, threatens, or intimidates others", "options": ["Never", "Occasionally", "Often", "Very Often"] },
+        { "number": 24, "text": "Initiates physical fights", "options": ["Never", "Occasionally", "Often", "Very Often"] },
+        { "number": 25, "text": "Lies to obtain goods or favors or to avoid obligations (e.g., 'cons' others)", "options": ["Never", "Occasionally", "Often", "Very Often"] },
+        { "number": 26, "text": "Is physically cruel to people", "options": ["Never", "Occasionally", "Often", "Very Often"] },
+        { "number": 27, "text": "Has stolen items of nontrivial value", "options": ["Never", "Occasionally", "Often", "Very Often"] },
+        { "number": 28, "text": "Deliberately destroys others’ property", "options": ["Never", "Occasionally", "Often", "Very Often"] },
+        { "number": 29, "text": "Is fearful, anxious, or worried", "options": ["Never", "Occasionally", "Often", "Very Often"] },
+        { "number": 30, "text": "Is self-conscious or easily embarrassed", "options": ["Never", "Occasionally", "Often", "Very Often"] },
+        { "number": 31, "text": "Is afraid to try new things for fear of making mistakes", "options": ["Never", "Occasionally", "Often", "Very Often"] },
+        { "number": 32, "text": "Feels worthless or inferior", "options": ["Never", "Occasionally", "Often", "Very Often"] },
+        { "number": 33, "text": "Blames self for problems; feels guilty", "options": ["Never", "Occasionally", "Often", "Very Often"] },
+        { "number": 34, "text": "Feels lonely, unwanted, or unloved; complains that “no one loves him or her”", "options": ["Never", "Occasionally", "Often", "Very Often"] },
+        { "number": 35, "text": "Is sad, unhappy, or depressed", "options": ["Never", "Occasionally", "Often", "Very Often"] },
+        { "number": 36, "text": "Reading", "options": ["Excellent", "Above Average", "Average", "Somewhat of a Problem", "Problematic"] },
+        { "number": 37, "text": "Mathematics", "options": ["Excellent", "Above Average", "Average", "Somewhat of a Problem", "Problematic"] },
+        { "number": 38, "text": "Written expression", "options": ["Excellent", "Above Average", "Average", "Somewhat of a Problem", "Problematic"] },
+        { "number": 39, "text": "Relationship with peers", "options": ["Excellent", "Above Average", "Average", "Somewhat of a Problem", "Problematic"] },
+        { "number": 40, "text": "Following directions", "options": ["Excellent", "Above Average", "Average", "Somewhat of a Problem", "Problematic"] },
+        { "number": 41, "text": "Disrupting class", "options": ["Excellent", "Above Average", "Average", "Somewhat of a Problem", "Problematic"] },
+        { "number": 42, "text": "Assignment completion", "options": ["Excellent", "Above Average", "Average", "Somewhat of a Problem", "Problematic"] },
+        { "number": 43, "text": "Organizational skills", "options": ["Excellent", "Above Average", "Average", "Somewhat of a Problem", "Problematic"] }
+    ],
+    "scoring": {
+        "methods": [
+            {
+            "name": "count-2plus-q1-9",
+            "type": "countAbove",
+            "questions": [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            "threshold": 2,
+            "values": [0, 1, 2, 3]
+            },
+            {
+            "name": "count-2plus-q10-18",
+            "type": "countAbove",
+            "questions": [10, 11, 12, 13, 14, 15, 16, 17, 18],
+            "threshold": 2,
+            "values": [0, 1, 2, 3]
+            },
+            {
+            "name": "total-symptoms-1-18",
+            "type": "sum",
+            "questions": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+            "values": [0, 1, 2, 3]
+            },
+            {
+            "name": "count-2plus-q19-28",
+            "type": "countAbove",
+            "questions": [19, 20, 21, 22, 23, 24, 25, 26, 27, 28],
+            "threshold": 2,
+            "values": [0, 1, 2, 3]
+            },
+            {
+            "name": "count-2plus-q29-35",
+            "type": "countAbove",
+            "questions": [29, 30, 31, 32, 33, 34, 35],
+            "threshold": 2,
+            "values": [0, 1, 2, 3]
+            },
+            {
+            "name": "count-4plus-performance",
+            "type": "countAbove",
+            "questions": [36, 37, 38, 39, 40, 41, 42, 43],
+            "threshold": 4,
+            "values": [1, 2, 3, 4, 5]
+            },
+            {
+            "name": "average-performance",
+            "type": "average",
+            "questions": [36, 37, 38, 39, 40, 41, 42, 43],
+            "values": [1, 2, 3, 4, 5]
+            }
+        ]
+    }
+}

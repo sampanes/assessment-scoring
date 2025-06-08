@@ -3,7 +3,8 @@ const surveyFolder = 'surveys/';
 /* Hardcoded list of files (since GitHub Pages can’t list directory contents) */
 const surveyFiles = [
   'test_survey.json',
-  'vanderbilt_parent.json'
+  'vanderbilt_parent.json',
+  'vanderbilt_teacher.json'
 ];
 
 async function loadSurveys() {
