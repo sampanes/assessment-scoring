@@ -14,16 +14,17 @@ h1, h2 {
 /* Question styling */
 #questionContainer {
   max-width: 600px;
-  margin: 0 auto 1.5em;
+  margin: 1.5em auto;
   background: white;
-  padding: 1.5em;
+  padding: 0.5em;
   border-radius: 1em;
   box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
 #questionContainer p {
-  font-size: 1.2em;
+  font-size: 1.1em;
   margin-bottom: 1em;
+  line-height: 1.6;
 }
 
 /* Option buttons */
@@ -32,7 +33,7 @@ h1, h2 {
   width: 100%;
   padding: 1em;
   margin-bottom: 0.75em;
-  font-size: 1em;
+  font-size: 1.05em;
   border: 2px solid #ccc;
   border-radius: 0.75em;
   background: #fff;
@@ -55,7 +56,7 @@ h1, h2 {
   display: flex;
   justify-content: center;
   gap: 1em;
-  margin-top: 1em;
+  margin-top: 0em;
 }
 
 #navControls button,
@@ -128,6 +129,10 @@ h1, h2 {
 
 #sideMenu.visible {
   transform: translateX(0);
+}
+
+#questionList {
+  padding-bottom: 6em; /* adds scroll room below last item */
 }
 
 #questionList li {
