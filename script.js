@@ -38,9 +38,13 @@ async function loadSurveys() {
       };
 
 
-      li.appendChild(title);
-      li.appendChild(filename);
-      li.appendChild(button);
+      const infoDiv = document.createElement('div');
+      infoDiv.appendChild(title);
+      infoDiv.appendChild(document.createElement('br')); // line break
+      infoDiv.appendChild(filename);
+
+      li.appendChild(infoDiv);
+      li.appendChild(button);      
 
       list.appendChild(li);
     } catch (err) {

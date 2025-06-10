@@ -218,6 +218,8 @@ h1, h2 {
 }
 
 #surveyList li {
+  display: flex;
+  align-items: flex-start;
   margin-bottom: 1em;
   font-size: 1.1em;
   background: #f0f8ff;
