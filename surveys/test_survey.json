@@ -10,6 +10,36 @@
       "number": 2,
       "text": "I lorem more than ipsum.",
       "options": ["Never", "Sometimes", "Often", "Always"]
+    },
+    {
+      "number": 3,
+      "text": "I feel foo or bar.",
+      "options": ["Never", "Sometimes", "Often", "Always"]
+    },
+    {
+      "number": 4,
+      "text": "I lorem more than ipsum.",
+      "options": ["Never", "Sometimes", "Often", "Always"]
+    },
+    {
+      "number": 5,
+      "text": "I feel foo or bar.",
+      "options": ["Never", "Sometimes", "Often", "Always"]
+    },
+    {
+      "number": 6,
+      "text": "I lorem more than ipsum.",
+      "options": ["Never", "Sometimes", "Often", "Always"]
+    },
+    {
+      "number": 7,
+      "text": "I feel foo or bar.",
+      "options": ["Never", "Sometimes", "Often", "Always"]
+    },
+    {
+      "number": 8,
+      "text": "I lorem more than ipsum.",
+      "options": ["Never", "Sometimes", "Often", "Always"]
     }
   ],
   "scoring": {

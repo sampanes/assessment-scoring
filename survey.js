@@ -97,34 +97,34 @@ function generateScoreLabel(method) {
 }
 
 function renderResults() {
-    const scores = calculateScores(surveyData, responses);
-    const container = document.getElementById('questionContainer');
-    const resultsDiv = document.getElementById('resultsContainer');
+  const scores = calculateScores(surveyData, responses);
+  const container = document.getElementById('questionContainer');
+  const resultsDiv = document.getElementById('resultsContainer');
 
-    container.innerHTML = '';
-    resultsDiv.innerHTML = '<h3>📊 Results:</h3>';
+  container.innerHTML = '';
+  resultsDiv.innerHTML = '<h3>📊 Results:</h3>';
 
-    scores.forEach(score => {
-        const method = surveyData.scoring.methods.find(m => m.name === score.name);
-        const label = method ? generateScoreLabel(method) : score.name;
+  scores.forEach(score => {
+    const method = surveyData.scoring.methods.find(m => m.name === score.name);
+    const label = method ? generateScoreLabel(method) : score.name;
 
-        const div = document.createElement('div');
-        div.className = 'resultItem';
+    const div = document.createElement('div');
+    div.className = 'resultItem';
 
-        const labelSpan = document.createElement('span');
-        labelSpan.className = 'resultLabel';
-        labelSpan.textContent = label;
+    const labelSpan = document.createElement('span');
+    labelSpan.className = 'resultLabel';
+    labelSpan.textContent = label;
 
-        const valueSpan = document.createElement('span');
-        valueSpan.className = 'resultValue';
-        valueSpan.textContent = score.value;
+    const valueSpan = document.createElement('span');
+    valueSpan.className = 'resultValue';
+    valueSpan.textContent = score.value;
 
-        div.appendChild(labelSpan);
-        div.appendChild(valueSpan);
-        resultsDiv.appendChild(div);
-    });
+    div.appendChild(labelSpan);
+    div.appendChild(valueSpan);
+    resultsDiv.appendChild(div);
+  });
 
-    document.getElementById('surveyContent').style.display = 'none';
+  document.getElementById('surveyContent').style.display = 'none';
 }
 
 function navigateTo(target) {
@@ -255,7 +255,8 @@ function calculateScores(data, responses) {
       console.log(`➡️ Criteria ${method.name}: ${passed ? '✅' : '❌'}`);
       scores.push({
         name: method.name,
-        value: passed ? '✅ met' : '❌ not met'
+        value: passed ? '✅ met' : '❌ not met',
+        meets: passed
       });
 
     } else if (method.type === 'average') {
