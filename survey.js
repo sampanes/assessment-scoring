@@ -330,6 +330,29 @@ document.getElementById('submitBtn').onclick = () => {
   populateSidebar();
 };
 
+document.addEventListener("keydown", (e) => {
+  if (document.activeElement.tagName === "INPUT") return;
+
+  const key = e.key;
+  const optionButtons = document.querySelectorAll("#questionContainer .optionBtn");
+
+  if (!isNaN(parseInt(key))) {
+    const index = parseInt(key);
+    if (index >= 0 && index < optionButtons.length) {
+      optionButtons[index].click();
+    }
+  } else if (key === "ArrowRight") {
+    document.getElementById("nextBtn")?.click();
+  } else if (key === "ArrowLeft") {
+    document.getElementById("prevBtn")?.click();
+  } else if (key === "Enter") {
+    const submitBtn = document.getElementById("submitBtn");
+    if (submitBtn && !submitBtn.disabled) {
+      submitBtn.click();
+    }
+  }
+});
+
 document.addEventListener('click', (e) => {
   const sideMenu = document.getElementById('sideMenu');
   const menuToggle = document.getElementById('menuToggle');
