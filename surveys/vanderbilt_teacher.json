@@ -94,6 +94,45 @@
             "questions": [36, 37, 38, 39, 40, 41, 42, 43],
             "values": [1, 2, 3, 4, 5]
             }
+        ],
+        "criteria": [
+        {
+            "comment": "Predominantly Inattentive subtype",
+            "&&": [
+                { "method": "count-2plus-q1-9",       "meets": ">=6" },
+                { "method": "count-4plus-performance","meets": ">=1" }
+            ]
+        },
+        {
+            "comment": "Predominantly Hyperactive/Impulsive subtype",
+            "&&": [
+                { "method": "count-2plus-q10-18",      "meets": ">=6" },
+                { "method": "count-4plus-performance", "meets": ">=1" }
+            ]
+        },
+        {
+            "comment": "ADHD Combined Inattention/Hyperactivity",
+            "&&": [
+                { "method": "count-2plus-q1-9",        "meets": ">=6" },
+                { "method": "count-2plus-q10-18",      "meets": ">=6" },
+                { "method": "count-4plus-performance", "meets": ">=1" }
+            ]
+        },
+        {
+            "comment": "Oppositional-Defiant/Conduct Disorder Screen",
+            "&&": [
+                { "method": "count-2plus-q19-28",      "meets": ">=3" },
+                { "method": "count-4plus-performance", "meets": ">=1" }
+            ]
+        },
+        {
+            "comment": "Anxiety/Depression Screen",
+            "&&": [
+                { "method": "count-2plus-q29-35",      "meets": ">=3" },
+                { "method": "count-4plus-performance", "meets": ">=1" }
+            ]
+        }
         ]
+
     }
 }

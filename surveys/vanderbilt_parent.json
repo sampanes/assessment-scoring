@@ -113,6 +113,51 @@
             "values": [1, 2, 3, 4, 5],
             "questions": [48, 49, 50, 51, 52, 53, 54, 55]
             }
+        ],
+        "criteria": [
+            {
+                "comment": "Predominantly Inattentive Subtype",
+                "&&": [
+                    { "method": "count-2plus-q1-9", "meets": ">=6" },
+                    { "method": "count-4plus-performance", "meets": ">=1" }
+                ]
+            },
+            {
+                "comment": "Predominantly Hyperactive/Impuslive subtype",
+                "&&": [
+                    { "method": "count-2plus-q10-18", "meets": ">=6" },
+                    { "method": "count-4plus-performance", "meets": ">=1" }
+                ]
+            },
+            {
+                "comment": "ADHD Combined Inattention/Hyperactivity",
+                "&&": [
+                    { "method": "count-2plus-q1-9", "meets": ">=6" },
+                    { "method": "count-2plus-q10-18", "meets": ">=6" },
+                    { "method": "count-4plus-performance", "meets": ">=1" }
+                ]
+            },
+            {
+                "comment": "Oppositional-Defiant Disorder Screen",
+                "&&": [
+                    { "method": "count-2plus-q19-26", "meets": ">=4" },
+                    { "method": "count-4plus-performance", "meets": ">=1" }
+                ]
+            },
+            {
+                "comment": "Conduct Disorder Screen",
+                "&&": [
+                    { "method": "count-2plus-q27-40", "meets": ">=3" },
+                    { "method": "count-4plus-performance", "meets": ">=1" }
+                ]
+            },
+            {
+                "comment": "Anxiety/Depression Screen",
+                "&&": [
+                    { "method": "count-2plus-q41-47", "meets": ">=3" },
+                    { "method": "count-4plus-performance", "meets": ">=1" }
+                ]
+            }
         ]
     }
 }

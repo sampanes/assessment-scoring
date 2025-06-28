@@ -54,6 +54,35 @@
         "type": "countAbove",
         "threshold": 2,
         "values": [0, 1, 2, 3]
+      },
+      {
+        "name": "count-2plus-q1-4",
+        "type": "countAbove",
+        "threshold": 2,
+        "values":[0,1,2,3],
+        "questions": [1,2,3,4]
+      },
+      {
+        "name": "count-2plus-q5-8",
+        "type": "countAbove",
+        "threshold": 2,
+        "values":[0,1,2,3],
+        "questions": [5,6,7,8]
+      }
+    ],
+    "criteria": [
+      {
+        "comment": "Predominantly foobar Subtype",
+        "&&": [
+          { "method": "count-2plus-q1-4", "meets": ">=3" }
+        ]
+      },
+      {
+        "comment": "Combined Subtype",
+        "&&": [
+          { "method": "count-2plus-q1-4", "meets": ">=3" },
+          { "method": "count-2plus-q5-8", "meets": ">=3" }
+        ]
       }
     ]
   }

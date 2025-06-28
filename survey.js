@@ -51,24 +51,25 @@ function renderCurrentQuestion() {
     const values = methodWithValues?.values || q.options.map((_, i) => i); // default fallback
 
     q.options.forEach((opt, idx) => {
-    const btn = document.createElement('button');
-    const scoreValue = values[idx];
+      const btn = document.createElement('button');
+      const scoreValue = values[idx];
 
-    btn.textContent = `${scoreValue} :  ${opt}`;
-    btn.className = 'optionBtn';
+      btn.textContent = `${scoreValue} :  ${opt}`;
+      btn.className = 'optionBtn';
 
-    btn.onclick = () => {
-        responses[q.number] = idx;
+      btn.onclick = () => {
+        // store the real scoreValue, not the idx
+        responses[q.number] = scoreValue; 
         if (currentQuestion < surveyData.questions.length - 1) currentQuestion++;
-        renderCurrentQuestion(); // refresh for highlight
+        renderCurrentQuestion();
         populateSidebar();
-    };
+      };
 
-    if (responses[q.number] === idx) {
-        btn.classList.add('selected');
-    }
+      if (responses[q.number] === scoreValue) {
+          btn.classList.add('selected');
+      }
 
-    wrapper.appendChild(btn);
+      wrapper.appendChild(btn);
     });
 
     container.appendChild(wrapper);
@@ -209,31 +210,32 @@ function calculateScores(data, responses) {
 
       qList.forEach(qNum => {
         const answer = responses[qNum];
-        const val = method.values?.[answer];
-        console.log(`Q${qNum}: answer=${answer}, mapped=${val}`);
-        if (answer !== undefined && val !== undefined) total += val;
+        // if answer is already a number, use it; otherwise map via values[]
+        const val = typeof answer === 'number'
+          ? answer
+          : method.values?.[answer];
+        if (val !== undefined) total += val;
       });
 
-      console.log(`➡️ Total for ${method.name}: ${total}`);
       scores.push({ name: method.name, value: total });
-
-    } else if (method.type === 'countAbove') {
+    }
+    else if (method.type === 'countAbove') {
       let count = 0;
       const qList = method.questions || data.questions.map(q => q.number);
 
       qList.forEach(qNum => {
         const answer = responses[qNum];
-        const val = method.values?.[answer];
-        console.log(`Q${qNum}: answer=${answer}, mapped=${val}`);
-        if (answer !== undefined && val !== undefined && val >= method.threshold) {
+        const val = typeof answer === 'number'
+          ? answer
+          : method.values?.[answer];
+        if (val !== undefined && val >= method.threshold) {
           count++;
         }
       });
 
-      console.log(`➡️ Count ≥${method.threshold}: ${count}`);
       scores.push({ name: method.name, value: count });
-
-    } else if (method.type === 'criteria') {
+    }
+    else if (method.type === 'criteria') {
       const passed = method.require.every(rule => {
         const values = rule.questions.map(qNum => responses[qNum]);
 
@@ -265,8 +267,9 @@ function calculateScores(data, responses) {
 
       method.questions.forEach(qNum => {
         const answer = responses[qNum];
-        const val = method.values?.[answer];
-        console.log(`Q${qNum}: answer=${answer}, mapped=${val}`);
+        const val = typeof answer === 'number'
+          ? answer
+          : method.values?.[answer];
         if (answer !== undefined && val !== undefined) {
           total += val;
           count++;
@@ -279,8 +282,53 @@ function calculateScores(data, responses) {
     }
   });
 
+  const criteria = data.scoring.criteria || [];
+  const methodScores = Object.fromEntries(scores.map(s => [s.name, s.value]));
+
+  criteria.forEach(flag => {
+    let result = evaluateCriteria(flag, methodScores);
+
+    scores.push({
+      name: `criteria-${flag.comment}`,
+      value: result ? '✅ met' : '❌ not met',
+      meets: result,
+      comment: flag.comment
+    });
+  });
+
   return scores;
 }
+
+function evaluateCriteria(flag, methodScores) {
+  const logicType = '&&' in flag ? '&&' : '||' in flag ? '||' : null;
+  if (!logicType || !Array.isArray(flag[logicType])) return false;
+
+  const checks = flag[logicType].map(cond => {
+    const methodValue = methodScores[cond.method];
+    if (methodValue === undefined) return false;
+
+    // Simple match like ">=6", "<4", etc.
+    const match = cond.meets.match(/(>=|<=|>|<|==|=|!=)\s*(\d+)/);
+    if (!match) return false;
+
+    const [_, op, numStr] = match;
+    const num = parseFloat(numStr);
+
+    switch (op) {
+      case '>': return methodValue > num;
+      case '>=': return methodValue >= num;
+      case '<': return methodValue < num;
+      case '<=': return methodValue <= num;
+      case '!=': return methodValue != num;
+      case '=':
+      case '==': return methodValue == num;
+      default: return false;
+    }
+  });
+
+  return logicType === '&&' ? checks.every(Boolean) : checks.some(Boolean);
+}
+
 
 /* RUNNTINGS */
 
@@ -332,21 +380,39 @@ document.getElementById('submitBtn').onclick = () => {
 };
 
 document.addEventListener("keydown", (e) => {
+  // don’t intercept typing
   if (document.activeElement.tagName === "INPUT") return;
 
   const key = e.key;
   const optionButtons = document.querySelectorAll("#questionContainer .optionBtn");
 
-  if (!isNaN(parseInt(key))) {
-    const index = parseInt(key);
-    if (index >= 0 && index < optionButtons.length) {
-      optionButtons[index].click();
+  // ------------ NUMBER KEYS ------------
+  const raw = parseInt(key, 10);
+  if (!isNaN(raw)) {
+    // Derive this question's values[]
+    const q      = surveyData.questions[currentQuestion];
+    const method = surveyData.scoring.methods.find(m =>
+      m.values && (!m.questions || m.questions.includes(q.number))
+    );
+    const values = method?.values || q.options.map((_, i) => i);
+
+    // Map the pressed key directly to the scoreValue array
+    const idx = values.indexOf(raw);
+    if (idx >= 0 && idx < optionButtons.length) {
+      optionButtons[idx].click();
     }
-  } else if (key === "ArrowRight") {
+    return;
+  }
+
+  // ------------ ARROW KEYS ------------
+  if (key === "ArrowRight") {
     document.getElementById("nextBtn")?.click();
   } else if (key === "ArrowLeft") {
     document.getElementById("prevBtn")?.click();
-  } else if (key === "Enter") {
+  }
+
+  // ------------ ENTER KEY ------------
+  else if (key === "Enter") {
     const submitBtn = document.getElementById("submitBtn");
     if (submitBtn && !submitBtn.disabled) {
       submitBtn.click();
